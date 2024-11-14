@@ -72,7 +72,6 @@ if prompt := st.chat_input("Input yout message."):
 
             # system prompt와 사용자 메시지를 조합하여 프롬프트 생성
             prompt_text = get_prompt(st.session_state.messages)
-            print(prompt_text)
 
             # 모델 응답 생성
             response = st.session_state.llm_model.generate(prompt_text)
