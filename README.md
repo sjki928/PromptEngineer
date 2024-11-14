@@ -8,3 +8,12 @@ Making UI (Chat &amp; Completion) that can change system prompt and models(local
 ```shell
 sh run.sh
 ```
+## Used Stack
+
+- **Streamlit**
+- **VLLM**
+
+## TODO
+
+- [ ] Update Generating Prompt
+- [ ] Delete Only Parts of Dialogue
