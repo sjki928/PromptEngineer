@@ -25,11 +25,12 @@ def seed_everything(seed):
     np.random.seed(seed)
     random.seed(seed)
 
-sampleparams=SamplingParams().update_from_generation_config({
-  "max_tokens": 512,
+sampleparams=SamplingParams()
+sampleparams.update_from_generation_config({
+  "max_tokens": 2048,
   "stop_token_ids": 128001,
-  "do_sample": True,
-  "temperature": 0.3,
+  "do_sample": False,
+  "temperature": 0.8,
   "top_p": 0.9
     }
 )
@@ -85,8 +86,8 @@ if prompt := st.chat_input("Input yout message."):
             response = st.session_state.llm_model.generate(prompt_text,
                                                            sampling_params=sampleparams
                                                            )
-            
-            full_response = response[0].outputs[0].text.replace(prompt_text, "").strip()
+            # print(response[0].outputs)
+            full_response = response[0].outputs[0].text.strip()
             message_placeholder.markdown(full_response)
         
         # 모델 응답 저장
