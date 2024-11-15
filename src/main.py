@@ -7,8 +7,8 @@ import torch
 import numpy as np
 from model import load_model_from_hf
 from utils import get_prompt
-# from transformers import AutoTokenizer
-# from vllm import LLM
+from vllm import SamplingParams
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -25,6 +25,14 @@ def seed_everything(seed):
     np.random.seed(seed)
     random.seed(seed)
 
+sampleparams=SamplingParams().update_from_generation_config({
+  "max_tokens": 512,
+  "stop_token_ids": 128001,
+  "do_sample": True,
+  "temperature": 0.3,
+  "top_p": 0.9
+    }
+)
 
 # UI 모델 설정
 model_path = st.sidebar.text_input("Enter Hugging Face or Local Model Path (e.g., 'gpt2')", value="")
@@ -74,7 +82,10 @@ if prompt := st.chat_input("Input yout message."):
             prompt_text = get_prompt(st.session_state.messages)
 
             # 모델 응답 생성
-            response = st.session_state.llm_model.generate(prompt_text)
+            response = st.session_state.llm_model.generate(prompt_text,
+                                                           sampling_params=sampleparams
+                                                           )
+            
             full_response = response[0].outputs[0].text.replace(prompt_text, "").strip()
             message_placeholder.markdown(full_response)
         
